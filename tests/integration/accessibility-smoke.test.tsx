@@ -1,7 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { DashboardPeriodSwitcher } from "@/components/dashboard-period-switcher";
 import { TransactionFilters } from "@/components/transaction-filters";
 import { TransactionForm } from "@/components/transaction-form";
 
@@ -25,20 +24,15 @@ describe("accessibility smoke coverage", () => {
     expect(amountInput).toHaveFocus();
   });
 
-  it("renders keyboard-friendly search and period controls", () => {
+  it("renders keyboard-friendly search controls", () => {
     render(
-      <>
-        <DashboardPeriodSwitcher period="week" onChange={vi.fn()} />
-        <TransactionFilters
-          categories={[{ id: "cat_1", name: "Food", type: "expense", description: null, createdAt: "", updatedAt: "" }]}
-          filters={{ keyword: "lunch", kind: "expense", categoryId: "cat_1", fromDate: "2026-03-01", toDate: "2026-03-31" }}
-          onChange={vi.fn()}
-        />
-      </>,
+      <TransactionFilters
+        categories={[{ id: "cat_1", name: "Food", type: "expense", description: null, createdAt: "", updatedAt: "" }]}
+        filters={{ keyword: "lunch", kind: "expense", categoryId: "cat_1", fromDate: "2026-03-01", toDate: "2026-03-31" }}
+        onChange={vi.fn()}
+      />,
     );
 
-    expect(screen.getByRole("tablist", { name: /chọn kỳ báo cáo/i })).toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: /tuần/i })).toHaveAttribute("aria-selected", "true");
     expect(screen.getByRole("search", { name: /bộ lọc giao dịch/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /đặt lại bộ lọc/i })).toBeInTheDocument();
   });

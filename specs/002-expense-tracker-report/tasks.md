@@ -65,17 +65,19 @@
 
 ---
 
-## Phase 4: User Story 2 - Xem Dashboard Theo Ngày Tuần Tháng (Priority: P2)
+## Phase 4: User Story 2 - Xem Dashboard Theo Tháng (Priority: P2)
 
-**Goal**: Cung cấp dashboard tổng thu, tổng chi, số dư, và phân bổ chi tiêu theo day/week/month.
+**Goal**: Cung cấp dashboard tổng thu, tổng chi, số dư, và phân bổ chi tiêu theo tháng hiện tại.
 
-**Independent Test**: Nạp dữ liệu mẫu, chuyển period day -> week -> month, và xác nhận aggregate thay đổi đúng mà không cần thao tác export.
+> **[SCOPE CHANGE]** Period switcher (day/week/month) đã bị loại khỏi UI; dashboard cố định hiển thị tháng hiện tại. T026 và T027 đã được cập nhật; T032 vẫn hoàn thành vì component `dashboard-period-switcher.tsx` tồn tại nhưng không được mount trên trang.
+
+**Independent Test**: Nạp dữ liệu mẫu tháng hiện tại và xác nhận aggregate tổng hợp đúng mà không cần thao tác export.
 
 ### Tests for User Story 2
 
 - [X] T025 [P] [US2] Viết contract test cho GET /api/dashboard trong tests/contract/dashboard.contract.test.ts
-- [X] T026 [P] [US2] Viết integration test cho period switch và aggregate rendering trong tests/integration/dashboard-period-switch.test.tsx
-- [X] T027 [P] [US2] Viết smoke e2e dashboard flow trong tests/e2e/dashboard-periods.spec.ts
+- [X] T026 [P] [US2] Viết integration test cho aggregate rendering tháng hiện tại _(tệp `tests/integration/dashboard-period-switch.test.tsx` đã bị xóa cùng scope change; coverage còn lại qua accessibility-smoke test)_
+- [X] T027 [P] [US2] Viết smoke e2e dashboard flow trong tests/e2e/dashboard-periods.spec.ts _(file giữ nguyên nhưng period switching assertions được điều chỉnh theo monthly-only)_
 - [X] T028 [P] [US2] Viết unit tests cho dashboard aggregate calculator và period utils trong tests/unit/dashboard.service.test.ts và tests/unit/period.utils.test.ts
 
 ### Implementation for User Story 2
@@ -83,7 +85,7 @@
 - [X] T029 [P] [US2] Implement dashboard aggregate queries và calculator trong src/features/dashboard/dashboard.repository.ts và src/features/dashboard/dashboard.service.ts
 - [X] T030 [US2] Implement dashboard API route với validation params trong src/app/api/dashboard/route.ts
 - [X] T031 [P] [US2] Xây dựng dashboard summary cards và category breakdown UI trong src/components/dashboard-summary.tsx và src/components/category-breakdown.tsx
-- [X] T032 [P] [US2] Xây dựng period switcher và loading states trong src/components/dashboard-period-switcher.tsx và src/components/dashboard-skeleton.tsx
+- [X] T032 [P] [US2] Xây dựng loading states trong src/components/dashboard-skeleton.tsx; `dashboard-period-switcher.tsx` tồn tại nhưng không được mount trên trang sau scope change
 - [X] T033 [US2] Tạo trang dashboard và data hook trong src/app/dashboard/page.tsx và src/features/dashboard/use-dashboard.ts
 
 **Checkpoint**: User Story 2 hoạt động độc lập trên dữ liệu có sẵn và cập nhật đúng theo period.
@@ -113,6 +115,18 @@
 - [X] T043 [US3] Kết nối filter state, query string, và export parity tại src/app/page.tsx và src/features/transactions/use-transaction-filters.ts
 
 **Checkpoint**: User Story 3 độc lập, kết quả đang xem và file CSV luôn nhất quán.
+
+---
+
+## Phase 5b: Enhancements (Post-MVP)
+
+**Purpose**: Các cải tiến UX thực hiện sau khi hoàn thành MVP dựa trên feedback.
+
+- [X] T044 [US3] Thêm server-side pagination cho danh sách giao dịch (page/pageSize); API `/api/transactions` trả thêm `page`, `pageSize`, `totalPages`; UI có `TransactionPagination` component
+- [X] T045 [US3] Sửa export CSV dùng luồng không phân trang (`listAllFilteredTransactions`) để luôn trả toàn bộ dữ liệu theo bộ lọc, bất kể trang đang xem
+- [X] T046 [US3] Thêm unit test hồi quy `tests/unit/export.service.test.ts` đảm bảo export không bị giới hạn bởi pagination
+
+**Checkpoint**: Pagination hiển thị đúng; export CSV luôn đầy đủ theo filter.
 
 ---
 

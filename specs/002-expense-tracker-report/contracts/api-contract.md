@@ -31,8 +31,8 @@ Base path: /api
 - Response 201: category object đã tạo.
 
 ## GET /api/transactions
-- Purpose: Lấy transactions với filter/search.
-- Query params: fromDate, toDate, kind, categoryId, keyword.
+- Purpose: Lấy transactions với filter/search, có phân trang.
+- Query params: fromDate, toDate, kind, categoryId, keyword, page (default: 1), pageSize (default: 10, max: 100).
 - Response 200:
 ```json
 {
@@ -47,7 +47,10 @@ Base path: /api
       "note": "Bữa trưa"
     }
   ],
-  "total": 1
+  "total": 1,
+  "page": 1,
+  "pageSize": 10,
+  "totalPages": 1
 }
 ```
 
@@ -77,7 +80,7 @@ Base path: /api
 ## GET /api/dashboard
 - Purpose: Lấy tổng hợp dashboard theo period.
 - Query params:
-  - period: day|week|month (required)
+  - period: day|week|month (optional, default: month)
   - fromDate, toDate (optional)
 - Response 200:
 ```json
@@ -98,8 +101,8 @@ Base path: /api
 ```
 
 ## GET /api/transactions/export.csv
-- Purpose: Export CSV theo kết quả đang filter/search.
-- Query params: giống GET /api/transactions.
+- Purpose: Export CSV toàn bộ giao dịch theo bộ filter/search (không phân trang).
+- Query params: fromDate, toDate, kind, categoryId, keyword (không nhận page/pageSize).
 - Response 200:
   - Content-Type: text/csv; charset=utf-8
   - Content-Disposition: attachment; filename="transactions-YYYYMMDD.csv"

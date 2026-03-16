@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const dashboardQuerySchema = z.object({
-  period: z.enum(["day", "week", "month"]),
+  period: z.enum(["day", "week", "month"]).default("month"),
   fromDate: z.string().date().optional(),
   toDate: z.string().date().optional(),
 });

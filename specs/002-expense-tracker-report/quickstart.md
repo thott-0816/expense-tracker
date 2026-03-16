@@ -34,15 +34,16 @@
 ## 4) Kiểm thử User Story 2 (Dashboard)
 
 1. Mở dashboard.
-2. Chuyển period day -> week -> month.
-3. Kiểm tra totalIncome, totalExpense, balance thay đổi đúng.
+2. Kiểm tra totalIncome, totalExpense, balance hiển thị đúng cho tháng hiện tại.
+3. Kiểm tra phân bổ chi tiêu theo danh mục hiển thị đúng tỉ lệ.
 
 ## 5) Kiểm thử User Story 3 (Filter/Search/CSV)
 
 1. Áp bộ lọc theo category và khoảng ngày.
 2. Tìm kiếm theo keyword trong note.
-3. Export CSV.
-4. Mở file CSV và đối chiếu với kết quả đang hiển thị.
+3. Kiểm tra danh sách phân trang đúng (dùng điều khiển page/pageSize).
+4. Export CSV.
+5. Mở file CSV và xác nhận file chứa **toàn bộ** bản ghi theo bộ lọc, không chỉ trang đang xem.
 
 ## 6) Quality gates trước merge
 

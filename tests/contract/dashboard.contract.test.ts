@@ -22,8 +22,8 @@ vi.mock("@/features/dashboard/dashboard.service", () => ({
 import { GET } from "@/app/api/dashboard/route";
 
 describe("/api/dashboard contract", () => {
-  it("returns the aggregate payload for a period", async () => {
-    const response = await GET(new Request("http://localhost/api/dashboard?period=month"));
+  it("returns the aggregate payload with default monthly period", async () => {
+    const response = await GET(new Request("http://localhost/api/dashboard"));
     const body = await response.json();
 
     expect(response.status).toBe(200);

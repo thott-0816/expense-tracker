@@ -2,7 +2,7 @@ import { exportTransactionsCsv } from "@/lib/csv/export-transactions";
 
 import type { FilterQuery } from "@/types/expense";
 
-import { listFilteredTransactions } from "@/features/transactions/transaction-search.service";
+import { listAllFilteredTransactions } from "@/features/transactions/transaction-search.service";
 
 function buildFilename(date: Date) {
   const yyyy = date.getFullYear();
@@ -13,10 +13,10 @@ function buildFilename(date: Date) {
 
 export const exportService = {
   async exportTransactions(filter: FilterQuery = {}) {
-    const result = await listFilteredTransactions(filter);
+    const items = await listAllFilteredTransactions(filter);
     return {
       filename: buildFilename(new Date()),
-      content: exportTransactionsCsv(result.items),
+      content: exportTransactionsCsv(items),
     };
   },
 };

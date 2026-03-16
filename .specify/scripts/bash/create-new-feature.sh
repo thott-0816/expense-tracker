@@ -138,7 +138,7 @@ check_existing_branches() {
     local specs_dir="$1"
 
     # Fetch all remotes to get latest branch info (suppress errors if no remotes)
-    git fetch --all --prune 2>/dev/null || true
+    git fetch --all --prune >/dev/null 2>&1 || true
 
     # Get highest number from ALL branches (not just matching short name)
     local highest_branch=$(get_highest_from_branches)
@@ -154,6 +154,20 @@ check_existing_branches() {
 
     # Return next number
     echo $((max_num + 1))
+}
+
+sanitize_branch_number() {
+    local raw_value="$1"
+    local numeric
+
+    numeric=$(printf '%s\n' "$raw_value" | grep -Eo '[0-9]+' | tail -n 1)
+
+    if [ -z "$numeric" ]; then
+        echo "0"
+        return
+    fi
+
+    echo "$numeric"
 }
 
 # Function to clean and format a branch name
@@ -264,6 +278,8 @@ if [ -z "$BRANCH_NUMBER" ]; then
         BRANCH_NUMBER=$((HIGHEST + 1))
     fi
 fi
+
+BRANCH_NUMBER=$(sanitize_branch_number "$BRANCH_NUMBER")
 
 # Force base-10 interpretation to prevent octal conversion (e.g., 010 → 8 in octal, but should be 10 in decimal)
 FEATURE_NUM=$(printf "%03d" "$((10#$BRANCH_NUMBER))")
