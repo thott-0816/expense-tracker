@@ -2,9 +2,11 @@ import type { ReactNode } from "react";
 
 type AppShellProps = {
   accent: "sky" | "orange";
+  currentView?: "transactions" | "dashboard";
   badge: string;
   title: string;
-  description: string;
+  description?: string;
+  compact?: boolean;
   actions?: ReactNode;
   children: ReactNode;
 };
@@ -42,23 +44,25 @@ function NavLink({ href, label, isActive, accent }: NavItem & { accent: AppShell
   );
 }
 
-export function AppShell({ accent, badge, title, description, actions, children }: AppShellProps) {
+export function AppShell({ accent, currentView, badge, title, description, compact = false, actions, children }: AppShellProps) {
+  const activeView = currentView ?? (accent === "orange" ? "dashboard" : "transactions");
+
   return (
-    <main className={`min-h-screen px-4 py-8 text-zinc-950 sm:px-6 lg:px-8 ${accentStyles[accent].background}`}>
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
-        <header className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_18px_60px_-22px_rgba(15,23,42,0.28)] backdrop-blur">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-            <div className="space-y-3">
+    <main className={`min-h-screen px-4 py-6 text-zinc-950 sm:px-6 lg:px-8 ${accentStyles[accent].background}`}>
+      <div className={`mx-auto flex w-full max-w-6xl flex-col ${compact ? "gap-5" : "gap-6"}`}>
+        <header className={`rounded-[28px] border border-white/80 bg-white/90 shadow-[0_18px_60px_-22px_rgba(15,23,42,0.28)] backdrop-blur ${compact ? "p-5" : "p-6"}`}>
+          <div className={`flex flex-col lg:flex-row lg:items-start lg:justify-between ${compact ? "gap-4" : "gap-4"}`}>
+            <div className={compact ? "space-y-2.5" : "space-y-3"}>
               <p className={`text-sm font-medium uppercase tracking-[0.22em] ${accentStyles[accent].badge}`}>{badge}</p>
               <div>
-                <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
-                <p className="mt-2 max-w-2xl text-sm text-zinc-600 sm:text-base">{description}</p>
+                <h1 className={`font-semibold tracking-tight ${compact ? "text-2xl sm:text-3xl" : "text-3xl sm:text-4xl"}`}>{title}</h1>
+                {description ? <p className="mt-2 max-w-2xl text-sm text-zinc-600 sm:text-base">{description}</p> : null}
               </div>
             </div>
-            <div className="flex flex-col gap-4 lg:items-end">
+            <div className={`flex flex-col lg:items-end ${compact ? "gap-3" : "gap-4"}`}>
               <nav aria-label="Điều hướng ứng dụng" className="flex flex-wrap gap-2 rounded-full border border-zinc-200/80 bg-zinc-50/90 p-1.5">
-                <NavLink accent={accent} href="/" isActive={accent === "sky"} label="Giao dịch" />
-                <NavLink accent={accent} href="/dashboard" isActive={accent === "orange"} label="Dashboard" />
+                <NavLink accent={accent} href="/dashboard" isActive={activeView === "dashboard"} label="Dashboard" />
+                <NavLink accent={accent} href="/" isActive={activeView === "transactions"} label="Giao dịch" />
               </nav>
               {actions ? <div className="flex flex-wrap justify-start gap-3 lg:justify-end">{actions}</div> : null}
             </div>

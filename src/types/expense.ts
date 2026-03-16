@@ -32,6 +32,19 @@ export type FilterQuery = {
   period?: DashboardPeriod;
 };
 
+export type PaginationQuery = {
+  page?: number;
+  pageSize?: number;
+};
+
+export type PaginatedTransactions = {
+  items: TransactionRecord[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+};
+
 export type DashboardBreakdownItem = {
   categoryId: string;
   categoryName: string;

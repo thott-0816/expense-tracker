@@ -5,10 +5,11 @@ import { useId, useRef, useState } from "react";
 import { CategorySelect } from "@/components/category-select";
 import { createTransactionSchema } from "@/lib/validation/transaction";
 
-import type { CategoryRecord } from "@/types/expense";
+import type { CategoryRecord, TransactionRecord } from "@/types/expense";
 
 type TransactionFormProps = {
   categories: CategoryRecord[];
+  initialTransaction?: TransactionRecord | null;
   onSubmit: (payload: {
     kind: "income" | "expense";
     amount: number;
@@ -16,6 +17,7 @@ type TransactionFormProps = {
     categoryId: string;
     note?: string;
   }) => Promise<void> | void;
+  onCancelEdit?: () => void;
 };
 
 type TransactionFormValues = {
@@ -34,8 +36,22 @@ const initialValues: TransactionFormValues = {
   note: "",
 };
 
-export function TransactionForm({ categories, onSubmit }: TransactionFormProps) {
-  const [values, setValues] = useState(initialValues);
+function toFormValues(transaction?: TransactionRecord | null): TransactionFormValues {
+  if (!transaction) {
+    return initialValues;
+  }
+
+  return {
+    kind: transaction.kind,
+    amount: String(transaction.amount),
+    occurredAt: transaction.occurredAt,
+    categoryId: transaction.categoryId,
+    note: transaction.note ?? "",
+  };
+}
+
+export function TransactionForm({ categories, initialTransaction = null, onSubmit, onCancelEdit }: TransactionFormProps) {
+  const [values, setValues] = useState(() => toFormValues(initialTransaction));
   const [error, setError] = useState<string | null>(null);
   const amountInputRef = useRef<HTMLInputElement>(null);
   const amountInputId = useId();
@@ -43,6 +59,8 @@ export function TransactionForm({ categories, onSubmit }: TransactionFormProps) 
   const categoryInputId = useId();
   const noteInputId = useId();
   const errorId = useId();
+
+  const isEditing = Boolean(initialTransaction);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -59,14 +77,16 @@ export function TransactionForm({ categories, onSubmit }: TransactionFormProps) 
 
     setError(null);
     await onSubmit(parsed.data);
-    setValues(initialValues);
+    setValues(toFormValues(null));
   }
 
   return (
     <form className="space-y-4 rounded-2xl border border-zinc-200 bg-white p-5 shadow-[0_12px_40px_-28px_rgba(15,23,42,0.35)]" onSubmit={handleSubmit}>
       <div>
-        <h2 className="text-lg font-semibold text-zinc-950">Thêm giao dịch</h2>
-        <p className="text-sm text-zinc-500">Ghi nhận dòng tiền thu và chi hằng ngày.</p>
+        <h2 className="text-lg font-semibold text-zinc-950">{isEditing ? "Chỉnh sửa giao dịch" : "Thêm giao dịch"}</h2>
+        <p className="text-sm text-zinc-500">
+          {isEditing ? "Cập nhật thông tin giao dịch đang chọn." : "Ghi nhận dòng tiền thu và chi hằng ngày."}
+        </p>
       </div>
       <fieldset className="grid gap-4">
         <legend className="sr-only">Thông tin giao dịch</legend>
@@ -128,9 +148,20 @@ export function TransactionForm({ categories, onSubmit }: TransactionFormProps) 
           {error}
         </p>
       ) : null}
-      <button className="rounded-full bg-zinc-950 px-4 py-2 text-sm font-medium text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400" type="submit">
-        Lưu giao dịch
-      </button>
+      <div className="flex flex-wrap gap-3">
+        <button className="rounded-full bg-zinc-950 px-4 py-2 text-sm font-medium text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400" type="submit">
+          {isEditing ? "Cập nhật giao dịch" : "Lưu giao dịch"}
+        </button>
+        {isEditing ? (
+          <button
+            className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
+            onClick={onCancelEdit}
+            type="button"
+          >
+            Hủy chỉnh sửa
+          </button>
+        ) : null}
+      </div>
     </form>
   );
 }

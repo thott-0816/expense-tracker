@@ -13,7 +13,9 @@ export default function DashboardPage() {
 
   return (
     <AppShell
-      accent="orange"
+      accent="sky"
+      compact
+      currentView="dashboard"
       actions={<DashboardPeriodSwitcher period={period} onChange={setPeriod} />}
       badge="Expense Tracker"
       description="Theo dõi tổng thu, tổng chi, số dư và phân bổ chi tiêu theo từng khoảng thời gian."

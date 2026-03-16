@@ -14,7 +14,7 @@ export function DashboardPeriodSwitcher({ period, onChange }: DashboardPeriodSwi
         <button
           aria-selected={period === value}
           key={value}
-          className={`rounded-full px-4 py-2 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 ${period === value ? "bg-zinc-950 text-white" : "text-zinc-600"}`}
+          className={`rounded-full px-4 py-2 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${period === value ? "bg-zinc-950 text-white" : "text-zinc-600"}`}
           onClick={() => onChange(value)}
           role="tab"
           tabIndex={period === value ? 0 : -1}
