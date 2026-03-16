@@ -6,6 +6,7 @@ describe("transaction service", () => {
   it("rejects transaction creation when category does not exist", async () => {
     const repository = {
       listTransactions: vi.fn(),
+      listAllTransactions: vi.fn(),
       createTransaction: vi.fn(),
       updateTransaction: vi.fn(),
       deleteTransaction: vi.fn(),
@@ -32,6 +33,7 @@ describe("transaction service", () => {
     const createdAt = "2026-03-14T00:00:00.000Z";
     const repository = {
       listTransactions: vi.fn(),
+      listAllTransactions: vi.fn(),
       createTransaction: vi.fn(),
       updateTransaction: vi.fn().mockResolvedValue({
         id: "txn_1",

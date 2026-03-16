@@ -3,6 +3,7 @@ import { listFilteredTransactions } from "@/features/transactions/transaction-se
 import { transactionService } from "@/features/transactions/transaction.service";
 import { ApiError, fromZodError } from "@/lib/api/errors";
 import { created, handleRouteError, ok } from "@/lib/api/responses";
+import { revalidateExpenseData } from "@/lib/cache/revalidate-expense-data";
 import { createTransactionSchema } from "@/lib/validation/transaction";
 
 function parsePositiveInt(value: string | null, field: "page" | "pageSize", fallback: number) {
@@ -42,6 +43,7 @@ export async function POST(request: Request) {
     }
 
     const transaction = await transactionService.createTransaction(parsed.data);
+    revalidateExpenseData();
     return created(transaction);
   } catch (error) {
     return handleRouteError(error);

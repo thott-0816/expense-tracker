@@ -3,6 +3,22 @@ import { describe, expect, it, vi } from "vitest";
 
 import { TransactionFilters } from "@/components/transaction-filters";
 import { TransactionForm } from "@/components/transaction-form";
+import { ReportCategoryPie } from "@/components/report-category-pie";
+import { ReportFilters } from "@/components/report-filters";
+import { ReportIncomeExpenseBar } from "@/components/report-income-expense-bar";
+
+vi.mock("recharts", () => ({
+  ResponsiveContainer: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  BarChart: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  PieChart: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  Bar: () => <div />,
+  Pie: () => <div />,
+  Cell: () => <div />,
+  XAxis: () => <div />,
+  YAxis: () => <div />,
+  CartesianGrid: () => <div />,
+  Tooltip: () => <div />,
+}));
 
 describe("accessibility smoke coverage", () => {
   it("announces validation errors and returns focus to the invalid amount field", async () => {
@@ -35,5 +51,39 @@ describe("accessibility smoke coverage", () => {
 
     expect(screen.getByRole("search", { name: /bộ lọc giao dịch/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /đặt lại bộ lọc/i })).toBeInTheDocument();
+  });
+
+  it("renders accessible report filters and chart labels", () => {
+    render(
+      <>
+        <ReportFilters
+          categories={[{ id: "cat_1", name: "Food", type: "expense", description: null, createdAt: "", updatedAt: "" }]}
+          filters={{ month: "2026-03", categoryId: "cat_1" }}
+          onChange={vi.fn()}
+          onResetCategory={vi.fn()}
+        />
+        <ReportIncomeExpenseBar
+          series={{
+            month: "2026-03",
+            incomeAmount: 1000000,
+            expenseAmount: 300000,
+            incomeColor: "green",
+            expenseColor: "light-red",
+          }}
+        />
+        <ReportCategoryPie
+          distribution={{
+            month: "2026-03",
+            items: [{ categoryId: "cat_1", categoryName: "Food", amount: 300000, ratio: 1 }],
+          }}
+        />
+      </>,
+    );
+
+    expect(screen.getByRole("search", { name: /bộ lọc báo cáo/i })).toBeInTheDocument();
+    expect(screen.getByLabelText(/tháng báo cáo/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/danh mục lọc báo cáo/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/biểu đồ cột thu chi/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/chú thích cơ cấu chi tiêu/i)).toBeInTheDocument();
   });
 });

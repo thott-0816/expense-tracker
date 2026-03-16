@@ -1,4 +1,5 @@
 import { categoryService } from "@/features/categories/category.service";
+import { revalidateExpenseData } from "@/lib/cache/revalidate-expense-data";
 import { fromZodError } from "@/lib/api/errors";
 import { created, handleRouteError, ok } from "@/lib/api/responses";
 import { createCategorySchema } from "@/lib/validation/category";
@@ -21,6 +22,7 @@ export async function POST(request: Request) {
     }
 
     const category = await categoryService.createCategory(parsed.data);
+    revalidateExpenseData();
     return created(category);
   } catch (error) {
     return handleRouteError(error);

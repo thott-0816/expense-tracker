@@ -9,11 +9,15 @@
 - Xem tổng quan thu/chi.
 - Hiển thị tổng thu, tổng chi, số dư và phân bổ chi tiêu theo danh mục.
 
+![Dashboard](public/screenshots/dashboard.png)
+
 ### Giao dịch
 
 - Tạo, chỉnh sửa, xóa giao dịch thu/chi.
 - Gắn danh mục cho từng giao dịch, hỗ trợ lọc và tìm kiếm.
 - Export CSV theo đúng tập dữ liệu đang hiển thị sau lọc.
+
+![Giao dịch](public/screenshots/transactions.png)
 
 ### Báo cáo
 
@@ -22,6 +26,9 @@
 - Hiển thị tổng thu, tổng chi theo bộ lọc đang chọn.
 - Biểu đồ cột gồm 2 cột Thu/Chi cho đúng tháng đang xem.
 - Biểu đồ tròn hiển thị cơ cấu chi tiêu theo danh mục của toàn bộ tháng.
+- Tự làm mới dữ liệu trong cùng phiên khi người dùng quay lại tab hoặc focus lại cửa sổ.
+
+![Báo cáo](public/screenshots/reports.png)
 
 ## Prerequisites
 
@@ -50,6 +57,9 @@ npm run test
 npm run test:e2e
 npm run test:perf
 npm run validate
+
+# Nếu local đang chạy next dev khác và gặp .next/dev/lock khi e2e
+CI=1 npm run test:e2e
 ```
 
 ## Benchmark data

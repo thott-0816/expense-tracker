@@ -57,3 +57,13 @@
 2. Transaction list/filter/export vẫn giữ hành vi cũ.
 3. API báo cáo trả lời đúng error contract khi query không hợp lệ.
 4. Sau mutation giao dịch hoặc tạo danh mục, báo cáo có thể làm mới đúng trong cùng phiên sử dụng.
+
+## 8) Kết quả quality gate gần nhất
+
+- `npm run lint`: pass.
+- `npm run typecheck`: pass.
+- `npm run test`: pass (`19` test files, `50` tests).
+- `CI=1 npm run test:e2e`: pass (`6` tests).
+- `npm run test:perf`: pass (`4` tests), bao gồm benchmark refresh report `2000` lượt tính toán trong ngân sách.
+
+Lưu ý: local có thể có tiến trình `next dev` khác đang giữ `.next/dev/lock`. Khi đó nên chạy e2e bằng `CI=1 npm run test:e2e` để Playwright dùng build/start mode và tránh xung đột lock.

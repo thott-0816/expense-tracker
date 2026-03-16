@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 type AppShellProps = {
   accent: "sky" | "orange";
-  currentView?: "transactions" | "dashboard";
+  currentView?: "transactions" | "dashboard" | "reports";
   badge: string;
   title?: string;
   description?: string;
@@ -52,7 +52,7 @@ export function AppShell({ accent, currentView, badge, title, description, compa
     <main className={`min-h-screen px-4 py-6 text-zinc-950 sm:px-6 lg:px-8 ${accentStyles[accent].background}`}>
       <div className={`mx-auto flex w-full max-w-6xl flex-col ${compact ? "gap-5" : "gap-6"}`}>
         <header className={`rounded-[28px] border border-white/80 bg-white/90 shadow-[0_18px_60px_-22px_rgba(15,23,42,0.28)] backdrop-blur ${compact ? "p-5" : "p-6"}`}>
-          <div className={`flex flex-col lg:flex-row lg:items-start lg:justify-between ${compact ? "gap-4" : "gap-4"}`}>
+          <div className={`flex flex-col lg:flex-row lg:items-center lg:justify-between ${compact ? "gap-4" : "gap-4"}`}>
             <div className={compact ? "space-y-2.5" : "space-y-3"}>
               <p className={`text-base font-semibold uppercase tracking-[0.18em] sm:text-lg ${accentStyles[accent].badge}`}>{badge}</p>
               {hasHeaderText ? (
@@ -66,6 +66,7 @@ export function AppShell({ accent, currentView, badge, title, description, compa
               <nav aria-label="Điều hướng ứng dụng" className="flex flex-wrap gap-2 rounded-full border border-zinc-200/80 bg-zinc-50/90 p-1.5">
                 <NavLink accent={accent} href="/dashboard" isActive={activeView === "dashboard"} label="Dashboard" />
                 <NavLink accent={accent} href="/" isActive={activeView === "transactions"} label="Giao dịch" />
+                <NavLink accent={accent} href="/reports" isActive={activeView === "reports"} label="Báo cáo" />
               </nav>
               {actions ? <div className="flex flex-wrap justify-start gap-3 lg:justify-end">{actions}</div> : null}
             </div>
