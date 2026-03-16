@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Expense Tracker Report
 
-## Getting Started
+Ứng dụng Next.js App Router này quản lý giao dịch thu chi, dashboard tổng hợp theo kỳ, và export CSV theo tập dữ liệu đang xem. Quy trình đặc tả và implement được vận hành bằng SpecKit.
 
-First, run the development server:
+## Prerequisites
+
+- Node.js 24+
+- npm
+
+## Local setup
 
 ```bash
+npm install
+cp .env.example .env
+npm run db:generate
+npx prisma migrate deploy
+npm run db:seed
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Mở http://localhost:3000 để vào transaction workspace và http://localhost:3000/dashboard để xem dashboard.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Quality commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npm run typecheck
+npm run test
+npm run test:e2e
+npm run test:perf
+npm run validate
+```
 
-## Learn More
+## Benchmark data
 
-To learn more about Next.js, take a look at the following resources:
+Dữ liệu benchmark dùng để stress filter, dashboard, và CSV export:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run db:seed:perf
+npm run benchmark
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Script benchmark seed tạo 5000 giao dịch có đánh dấu `[perf]` để có thể seed lại an toàn mà không ảnh hưởng dữ liệu thủ công.
 
-## Deploy on Vercel
+## SpecKit workflow
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Slash commands có sẵn trong Copilot Chat:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `/speckit.constitution`
+- `/speckit.specify`
+- `/speckit.plan`
+- `/speckit.tasks`
+- `/speckit.implement`
+- `/speckit.clarify`
+- `/speckit.analyze`
+- `/speckit.checklist`
+
+## CI
+
+Workflow [./.github/workflows/ci.yml](./.github/workflows/ci.yml) chạy lint, typecheck, unit/contract/integration tests, performance validation, và Playwright smoke tests cho mỗi pull request.
