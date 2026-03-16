@@ -3,7 +3,7 @@
 Base path: /api
 
 ## GET /api/categories
-- Purpose: Lay danh sach category.
+- Purpose: Lấy danh sách category.
 - Response 200:
 ```json
 {
@@ -19,19 +19,19 @@ Base path: /api
 ```
 
 ## POST /api/categories
-- Purpose: Tao category moi.
+- Purpose: Tạo category mới.
 - Request body:
 ```json
 {
   "name": "Salary",
   "type": "income",
-  "description": "Thu nhap luong"
+  "description": "Thu nhập lương"
 }
 ```
-- Response 201: category object da tao.
+- Response 201: category object đã tạo.
 
 ## GET /api/transactions
-- Purpose: Lay transactions voi filter/search.
+- Purpose: Lấy transactions với filter/search.
 - Query params: fromDate, toDate, kind, categoryId, keyword.
 - Response 200:
 ```json
@@ -44,7 +44,7 @@ Base path: /api
       "occurredAt": "2026-03-14",
       "categoryId": "cat_123",
       "categoryName": "Food",
-      "note": "Bua trua"
+      "note": "Bữa trưa"
     }
   ],
   "total": 1
@@ -52,7 +52,7 @@ Base path: /api
 ```
 
 ## POST /api/transactions
-- Purpose: Tao transaction.
+- Purpose: Tạo transaction.
 - Request body:
 ```json
 {
@@ -60,22 +60,22 @@ Base path: /api
   "amount": 120000,
   "occurredAt": "2026-03-14",
   "categoryId": "cat_123",
-  "note": "Bua trua"
+  "note": "Bữa trưa"
 }
 ```
-- Response 201: transaction object da tao.
+- Response 201: transaction object đã tạo.
 
 ## PATCH /api/transactions/:id
-- Purpose: Cap nhat transaction.
+- Purpose: Cập nhật transaction.
 - Request body: kind, amount, occurredAt, categoryId, note (partial update).
-- Response 200: transaction object da cap nhat.
+- Response 200: transaction object đã cập nhật.
 
 ## DELETE /api/transactions/:id
-- Purpose: Xoa transaction.
+- Purpose: Xóa transaction.
 - Response 204: empty body.
 
 ## GET /api/dashboard
-- Purpose: Lay tong hop dashboard theo period.
+- Purpose: Lấy tổng hợp dashboard theo period.
 - Query params:
   - period: day|week|month (required)
   - fromDate, toDate (optional)
@@ -98,20 +98,20 @@ Base path: /api
 ```
 
 ## GET /api/transactions/export.csv
-- Purpose: Export CSV theo ket qua dang filter/search.
-- Query params: giong GET /api/transactions.
+- Purpose: Export CSV theo kết quả đang filter/search.
+- Query params: giống GET /api/transactions.
 - Response 200:
   - Content-Type: text/csv; charset=utf-8
   - Content-Disposition: attachment; filename="transactions-YYYYMMDD.csv"
 
 ## Error Contract
 
-Tat ca loi dung format:
+Tất cả lỗi dùng format:
 ```json
 {
   "error": {
     "code": "VALIDATION_ERROR",
-    "message": "Du lieu dau vao khong hop le",
+    "message": "Dữ liệu đầu vào không hợp lệ",
     "details": [
       {
         "field": "amount",

@@ -1,4 +1,4 @@
-# Specification Quality Checklist: Ung Dung Theo Doi Thu Chi Va Bao Cao Chi Tieu Hang Thang
+# Specification Quality Checklist: Ứng Dụng Theo Dõi Thu Chi Và Báo Cáo Chi Tiêu Hàng Tháng
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-03-14

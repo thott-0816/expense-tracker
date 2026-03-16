@@ -1,51 +1,60 @@
-# Next.js + SpecKit + Context7
+# Expense Tracker Report
 
-Project này dùng Next.js App Router và đã được khởi tạo SpecKit workflow cho GitHub Copilot.
+Ứng dụng Next.js App Router này quản lý giao dịch thu chi, dashboard tổng hợp theo kỳ, và export CSV theo tập dữ liệu đang xem. Quy trình đặc tả và implement được vận hành bằng SpecKit.
 
 ## Prerequisites
 
 - Node.js 24+
 - npm
-- VS Code (Copilot + MCP support)
 
-## Run project
+## Local setup
 
 ```bash
 npm install
+cp .env.example .env
+npm run db:generate
+npx prisma migrate deploy
+npm run db:seed
 npm run dev
 ```
 
-Mở `http://localhost:3000` để xem ứng dụng.
+Mở http://localhost:3000 để vào transaction workspace và http://localhost:3000/dashboard để xem dashboard.
+
+## Quality commands
+
+```bash
+npm run lint
+npm run typecheck
+npm run test
+npm run test:e2e
+npm run test:perf
+npm run validate
+```
+
+## Benchmark data
+
+Dữ liệu benchmark dùng để stress filter, dashboard, và CSV export:
+
+```bash
+npm run db:seed:perf
+npm run benchmark
+```
+
+Script benchmark seed tạo 5000 giao dịch có đánh dấu `[perf]` để có thể seed lại an toàn mà không ảnh hưởng dữ liệu thủ công.
 
 ## SpecKit workflow
 
-SpecKit đã được initialize trong workspace (`specify init --here --ai copilot`).
-Bạn có thể dùng các slash commands sau trong Copilot Chat:
+Slash commands có sẵn trong Copilot Chat:
 
 - `/speckit.constitution`
 - `/speckit.specify`
 - `/speckit.plan`
 - `/speckit.tasks`
 - `/speckit.implement`
-
-Các command bổ sung:
-
 - `/speckit.clarify`
 - `/speckit.analyze`
 - `/speckit.checklist`
 
-## Context7 MCP setup (VS Code)
+## CI
 
-Workspace đã có file cấu hình MCP tại `.vscode/mcp.json` với server `context7`.
-
-Hiện tại cấu hình dùng remote MCP URL nên có thể dùng ngay mà không cần nhập key.
-Nếu cần rate limit cao hơn, bạn có thể bổ sung API key Context7 theo tài liệu chính thức.
-
-## Useful scripts
-
-```bash
-npm run dev
-npm run build
-npm run start
-npm run lint
-```
+Workflow [./.github/workflows/ci.yml](./.github/workflows/ci.yml) chạy lint, typecheck, unit/contract/integration tests, performance validation, và Playwright smoke tests cho mỗi pull request.

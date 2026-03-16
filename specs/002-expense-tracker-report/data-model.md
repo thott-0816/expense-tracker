@@ -1,22 +1,22 @@
 # Data Model - Expense Tracker Report
 
 ## Entity: Category
-- Description: Nhom phan loai giao dich.
+- Description: Nhóm phân loại giao dịch.
 - Fields:
   - id: string (uuid, primary key)
-  - name: string (required, unique trong pham vi nguoi dung)
+  - name: string (required, unique trong phạm vi người dùng)
   - type: enum (income, expense, both)
   - description: string (optional, max 255)
   - createdAt: datetime
   - updatedAt: datetime
 - Validation rules:
-  - name: trim, do dai 2..50, khong rong
-  - type: phai nam trong tap gia tri hop le
+  - name: trim, độ dài 2..50, không rỗng
+  - type: phải nằm trong tập giá trị hợp lệ
 - Relationships:
   - 1 Category - N Transactions
 
 ## Entity: Transaction
-- Description: Ban ghi thu hoac chi.
+- Description: Bản ghi thu hoặc chi.
 - Fields:
   - id: string (uuid, primary key)
   - kind: enum (income, expense)
@@ -28,14 +28,14 @@
   - updatedAt: datetime
 - Validation rules:
   - amount > 0
-  - occurredAt khong null
-  - categoryId phai ton tai
-  - note neu co thi <= 500 va duoc trim
+  - occurredAt không null
+  - categoryId phải tồn tại
+  - note nếu có thì <= 500 và được trim
 - State transitions:
   - created -> updated -> deleted
 
 ## Entity: FilterQuery (View Model)
-- Description: Tap dieu kien loc va tim kiem.
+- Description: Tập điều kiện lọc và tìm kiếm.
 - Fields:
   - fromDate: date (optional)
   - toDate: date (optional)
@@ -44,11 +44,11 @@
   - keyword: string (optional)
   - period: enum (day, week, month)
 - Validation rules:
-  - fromDate <= toDate neu ca hai cung ton tai
-  - keyword <= 100 ky tu
+  - fromDate <= toDate nếu cả hai cùng tồn tại
+  - keyword <= 100 ký tự
 
 ## Entity: DashboardAggregate (Read Model)
-- Description: Tong hop so lieu dashboard theo period.
+- Description: Tổng hợp số liệu dashboard theo period.
 - Fields:
   - period: enum (day, week, month)
   - totalIncome: decimal(14,2)
@@ -57,7 +57,7 @@
   - categoryBreakdown: array<{categoryId, categoryName, amount, ratio}>
 - Validation rules:
   - balance = totalIncome - totalExpense
-  - ratio nam trong [0, 1]
+  - ratio nằm trong [0, 1]
 
 ## CSV Schema
 - Columns:
@@ -70,5 +70,5 @@
   - createdAt
   - updatedAt
 - Rules:
-  - CSV phan anh dung tap du lieu sau filter/search
-  - Escape ky tu dac biet theo RFC 4180
+  - CSV phản ánh đúng tập dữ liệu sau filter/search
+  - Escape ký tự đặc biệt theo RFC 4180

@@ -1,41 +1,41 @@
 # Research - Expense Tracker Report
 
-## Decision 1: Kien truc he thong
-- Decision: Su dung single Next.js App Router project.
-- Rationale: Scope hien tai tap trung 1 domain nghiep vu, tranh chi phi van hanh cao cua mo hinh tach service.
-- Alternatives considered: Tach backend API rieng (bi loai vi tang boilerplate deploy/monitoring).
+## Decision 1: Kiến trúc hệ thống
+- Decision: Sử dụng single Next.js App Router project.
+- Rationale: Scope hiện tại tập trung 1 domain nghiệp vụ, tránh chi phí vận hành cao của mô hình tách service.
+- Alternatives considered: Tách backend API riêng (bị loại vì tăng boilerplate deploy/monitoring).
 
-## Decision 2: Luu tru du lieu
-- Decision: Su dung SQLite thong qua Prisma ORM.
-- Rationale: Phu hop phase 1 voi quy mo den 10k transactions, migration ro rang, setup nhanh.
-- Alternatives considered: PostgreSQL (manh hon khi scale lon nhung chua can thiet); localStorage (kho truy van aggregate).
+## Decision 2: Lưu trữ dữ liệu
+- Decision: Sử dụng SQLite thông qua Prisma ORM.
+- Rationale: Phù hợp phase 1 với quy mô đến 10k transactions, migration rõ ràng, setup nhanh.
+- Alternatives considered: PostgreSQL (mạnh hơn khi scale lớn nhưng chưa cần thiết); localStorage (khó truy vấn aggregate).
 
-## Decision 3: Validation va trust boundaries
-- Decision: Validate payload tai route handlers bang Zod schemas.
-- Rationale: Dam bao input hop le o trust boundary, thong diep loi co cau truc, dung constitutional security gate.
-- Alternatives considered: Chi validate client (khong an toan); validate thu cong (de sot edge cases).
+## Decision 3: Validation và trust boundaries
+- Decision: Validate payload tại route handlers bằng Zod schemas.
+- Rationale: Đảm bảo input hợp lệ ở trust boundary, thông điệp lỗi có cấu trúc, đúng constitutional security gate.
+- Alternatives considered: Chỉ validate client (không an toàn); validate thủ công (dễ sót edge cases).
 
 ## Decision 4: Dashboard aggregate
-- Decision: Aggregate tai server theo period day/week/month.
-- Rationale: Giam payload va tranh sai lech khi client tu tinh toan.
-- Alternatives considered: Tinh tren client tu full dataset (khong toi uu khi du lieu lon).
+- Decision: Aggregate tại server theo period day/week/month.
+- Rationale: Giảm payload và tránh sai lệch khi client tự tính toán.
+- Alternatives considered: Tính trên client từ full dataset (không tối ưu khi dữ liệu lớn).
 
-## Decision 5: Loc tim kiem
-- Decision: Ho tro ket hop filter (date range/kind/category) + keyword search tren note/category.
-- Rationale: Bap sat FR-006 FR-007 va nhu cau doi soat thuc te.
-- Alternatives considered: Chi filter hoac chi search (khong du bao phu use case).
+## Decision 5: Lọc tìm kiếm
+- Decision: Hỗ trợ kết hợp filter (date range/kind/category) + keyword search trên note/category.
+- Rationale: Bám sát FR-006 FR-007 và nhu cầu đối soát thực tế.
+- Alternatives considered: Chỉ filter hoặc chỉ search (không đủ bao phủ use case).
 
 ## Decision 6: Export CSV
-- Decision: Export theo tap ket qua dang hien thi sau filter/search.
-- Rationale: Dung FR-008 va ky vong nguoi dung "what you see is what you export".
-- Alternatives considered: Export toan bo records khong theo filter (de gay nham lan).
+- Decision: Export theo tập kết quả đang hiển thị sau filter/search.
+- Rationale: Đúng FR-008 và kỳ vọng người dùng "what you see is what you export".
+- Alternatives considered: Export toàn bộ records không theo filter (dễ gây nhầm lẫn).
 
 ## Decision 7: Quality gates
-- Decision: Ap dung lint + type-check + unit/integration + smoke e2e.
-- Rationale: Dap ung constitution quality gate, can bang toc do va do tin cay.
-- Alternatives considered: Chi unit tests (thieu bao phu luong API/UI), chi e2e (thoi gian chay dai va kho debug).
+- Decision: Áp dụng lint + type-check + unit/integration + smoke e2e.
+- Rationale: Đáp ứng constitution quality gate, cân bằng tốc độ và độ tin cậy.
+- Alternatives considered: Chỉ unit tests (thiếu bao phủ luồng API/UI), chỉ e2e (thời gian chạy dài và khó debug).
 
-## Decision 8: Logging va operability
-- Decision: Logging co cau truc cho thao tac CRUD + export, an danh/bo qua du lieu nhay cam.
-- Rationale: Dap ung principle Simplicity and Operability + Security.
-- Alternatives considered: Log toan bo payload (rui ro lo du lieu), khong log (kho dieu tra su co).
+## Decision 8: Logging và operability
+- Decision: Logging có cấu trúc cho thao tác CRUD + export, ẩn danh/bỏ qua dữ liệu nhạy cảm.
+- Rationale: Đáp ứng principle Simplicity and Operability + Security.
+- Alternatives considered: Log toàn bộ payload (rủi ro lộ dữ liệu), không log (khó điều tra sự cố).

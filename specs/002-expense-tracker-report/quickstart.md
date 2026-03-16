@@ -1,54 +1,75 @@
 # Quickstart - Expense Tracker Report
 
-## 1) Chay project
+## 1) Chạy project
 
-1. Dam bao dang dung Node.js 24 LTS.
-2. Cai dependencies:
+1. Đảm bảo đang dùng Node.js 24 LTS.
+2. Cài dependencies:
    - npm install
-3. Chay dev server:
+3. Tạo file môi trường:
+   - cp .env.example .env
+4. Tạo Prisma client và apply migration:
+   - npm run db:generate
+   - npx prisma migrate deploy
+5. Seed dữ liệu mặc định:
+   - npm run db:seed
+3. Chạy dev server:
    - npm run dev
-4. Mo: http://localhost:3000
+4. Mở: http://localhost:3000
 
-## 2) Chuan bi du lieu mau
+## 2) Chuẩn bị dữ liệu mẫu
 
-1. Tao categories:
+1. Tạo categories:
    - Food (expense)
    - Transport (expense)
    - Salary (income)
-2. Tao toi thieu 10 transactions o nhieu ngay khac nhau.
+2. Tạo tối thiểu 10 transactions ở nhiều ngày khác nhau.
 
-## 3) Kiem thu User Story 1 (Transactions CRUD)
+## 3) Kiểm thử User Story 1 (Transactions CRUD)
 
-1. Tao giao dich thu va chi.
-2. Sua amount/category cua giao dich.
-3. Xoa mot giao dich.
-4. Xac nhan danh sach transactions cap nhat dung.
+1. Tạo giao dịch thu và chi.
+2. Sửa amount/category của giao dịch.
+3. Xóa một giao dịch.
+4. Xác nhận danh sách transactions cập nhật đúng.
 
-## 4) Kiem thu User Story 2 (Dashboard)
+## 4) Kiểm thử User Story 2 (Dashboard)
 
-1. Mo dashboard.
-2. Chuyen period day -> week -> month.
-3. Kiem tra totalIncome, totalExpense, balance thay doi dung.
+1. Mở dashboard.
+2. Chuyển period day -> week -> month.
+3. Kiểm tra totalIncome, totalExpense, balance thay đổi đúng.
 
-## 5) Kiem thu User Story 3 (Filter/Search/CSV)
+## 5) Kiểm thử User Story 3 (Filter/Search/CSV)
 
-1. Ap bo loc theo category va khoang ngay.
-2. Tim kiem theo keyword trong note.
+1. Áp bộ lọc theo category và khoảng ngày.
+2. Tìm kiếm theo keyword trong note.
 3. Export CSV.
-4. Mo file CSV va doi chieu voi ket qua dang hien thi.
+4. Mở file CSV và đối chiếu với kết quả đang hiển thị.
 
-## 6) Quality gates truoc merge
+## 6) Quality gates trước merge
 
 1. Lint:
    - npm run lint
 2. Type-check:
-   - npx tsc --noEmit
+   - npm run typecheck
 3. Tests:
    - npm run test
-4. Neu la bug fix: bo sung regression test fail-truoc/pass-sau.
+4. E2E smoke:
+   - npm run test:e2e
+5. Benchmark:
+   - npm run db:seed:perf
+   - npm run benchmark
+4. Nếu là bug fix: bổ sung regression test fail-trước/pass-sau.
 
 ## 7) Security checks
 
-1. Validate input tai route handlers.
-2. Khong commit secrets vao repository.
-3. Khong log du lieu nhay cam.
+1. Validate input tại route handlers.
+2. Không commit secrets vào repository.
+3. Không log dữ liệu nhạy cảm.
+
+## 8) CI parity
+
+1. Trước khi mở PR, chạy nhanh:
+   - npm run validate
+2. Nếu thay đổi UI flow quan trọng, chạy thêm:
+   - npm run test:e2e
+3. Nếu thay đổi filter/dashboard/export, chạy thêm:
+   - npm run benchmark
