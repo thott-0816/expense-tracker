@@ -15,6 +15,7 @@ import { useTransactions } from "@/features/transactions/use-transactions";
 export default function Home() {
   const { filters, setFilters, queryString } = useTransactionFilters();
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const {
     categories,
     transactions,
@@ -26,7 +27,7 @@ export default function Home() {
     total,
     totalPages,
     page,
-  } = useTransactions(queryString, currentPage, 10);
+  } = useTransactions(queryString, currentPage, pageSize);
   const [editingTransaction, setEditingTransaction] = useState<(typeof transactions)[number] | null>(null);
 
   function handleFilterChange(next: typeof filters) {
@@ -56,7 +57,6 @@ export default function Home() {
       compact
       currentView="transactions"
       badge="Expense Tracker"
-      title="Quản lý giao dịch"
     >
       {error ? <ErrorBanner message={error} /> : null}
         <div className="grid gap-6 lg:grid-cols-[360px_minmax(0,1fr)]">
@@ -72,14 +72,18 @@ export default function Home() {
               <TransactionFilters categories={categories} filters={filters} onChange={handleFilterChange} />
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <ExportCsvButton href={queryString ? `/api/transactions/export.csv?${queryString}` : "/api/transactions/export.csv"} />
               <TransactionPagination
                 currentPage={page}
-                pageSize={10}
+                pageSize={pageSize}
                 totalItems={total}
                 totalPages={totalPages}
                 onPageChange={setCurrentPage}
+                onPageSizeChange={(nextPageSize) => {
+                  setPageSize(nextPageSize);
+                  setCurrentPage(1);
+                }}
               />
+              <ExportCsvButton href={queryString ? `/api/transactions/export.csv?${queryString}` : "/api/transactions/export.csv"} />
             </div>
             <TransactionList
               items={transactions}

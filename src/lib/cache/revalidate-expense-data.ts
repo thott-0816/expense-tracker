@@ -4,6 +4,7 @@ export function revalidateExpenseData() {
   try {
     revalidatePath("/");
     revalidatePath("/dashboard");
+    revalidatePath("/reports");
   } catch {
     // `revalidatePath` requires a Next.js request context and is intentionally skipped in tests.
   }

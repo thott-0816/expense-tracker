@@ -3,6 +3,7 @@ import { performance } from "node:perf_hooks";
 import { describe, expect, it } from "vitest";
 
 import { calculateDashboardAggregate } from "@/features/dashboard/dashboard.service";
+import { calculateMonthlyReport } from "@/features/reports/report.service";
 import { parseFilterQuery } from "@/features/transactions/filter-query";
 import { exportTransactionsCsv } from "@/lib/csv/export-transactions";
 
@@ -71,5 +72,35 @@ describe("expense report performance", () => {
 
     expect(result.startsWith("id,occurredAt")).toBe(true);
     expect(elapsedMs).toBeLessThan(120);
+  });
+
+  it("calculates 2000 monthly reports within an acceptable refresh budget", () => {
+    const filteredItems = Array.from({ length: 250 }, (_, index) => ({
+      kind: index % 4 === 0 ? "income" : "expense",
+      amount: index * 1000 + 10000,
+    })) as Array<{ kind: "income" | "expense"; amount: number }>;
+
+    const monthlyExpenseItems = Array.from({ length: 120 }, (_, index) => ({
+      categoryId: `cat_${index % 12}`,
+      categoryName: `Category ${index % 12}`,
+      amount: index * 900 + 5000,
+    }));
+
+    const { elapsedMs } = measure(() => {
+      for (let index = 0; index < 2000; index += 1) {
+        calculateMonthlyReport(
+          {
+            month: "2026-03",
+            categoryId: index % 2 === 0 ? "cat_1" : undefined,
+          },
+          {
+            filteredItems,
+            monthlyExpenseItems,
+          },
+        );
+      }
+    });
+
+    expect(elapsedMs).toBeLessThan(300);
   });
 });

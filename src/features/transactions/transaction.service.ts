@@ -29,6 +29,10 @@ export function createTransactionService(repository: TransactionRepository, cate
       return repository.listTransactions(filter, pagination);
     },
 
+    listAllTransactions(filter: FilterQuery = {}) {
+      return repository.listAllTransactions(filter);
+    },
+
     async createTransaction(input: CreateTransactionInput) {
       await ensureCategoryExists(categories, input.categoryId);
       const result = await repository.createTransaction({

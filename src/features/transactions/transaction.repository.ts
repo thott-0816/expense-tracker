@@ -75,6 +75,18 @@ export const transactionRepository = {
     };
   },
 
+  async listAllTransactions(filter: FilterQuery = {}) {
+    const where = buildWhere(filter);
+
+    const transactions = await getDbClient().transaction.findMany({
+      where,
+      include: { category: { select: { name: true } } },
+      orderBy: [{ occurredAt: "desc" }, { createdAt: "desc" }],
+    });
+
+    return transactions.map(toTransactionRecord);
+  },
+
   async getTransactionById(id: string) {
     const transaction = await getDbClient().transaction.findUnique({
       where: { id },

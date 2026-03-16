@@ -12,6 +12,13 @@ Instructions for high-quality Next.js applications with Tailwind CSS styling and
 - Latest Next.js (App Router)
 - TypeScript for type safety
 - Tailwind CSS for styling
+- Context7 MCP is available for library and framework documentation lookup
+
+## Tooling Guidance
+
+- Use Context7 when a task depends on external library or framework behavior, version-specific APIs, configuration details, or recommended patterns
+- Prefer Context7 before guessing documentation details for Next.js, React, Prisma, Zod, Playwright, or other third-party tools used by this project
+- Do not use Context7 for repository-specific logic that can be answered directly from the local codebase
 
 ## Development Standards
 

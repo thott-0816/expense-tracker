@@ -59,3 +59,44 @@ export type DashboardAggregate = {
   balance: number;
   categoryBreakdown: DashboardBreakdownItem[];
 };
+
+export type ReportFilter = {
+  month: string;
+  categoryId?: string;
+};
+
+export type MonthlyReportSummary = {
+  month: string;
+  totalIncome: number;
+  totalExpense: number;
+  balance: number;
+  filterCategoryId: string | null;
+};
+
+export type MonthlyIncomeExpenseSeries = {
+  month: string;
+  incomeAmount: number;
+  expenseAmount: number;
+  incomeColor: string;
+  expenseColor: string;
+};
+
+export type CategoryExpenseSlice = {
+  categoryId: string;
+  categoryName: string;
+  amount: number;
+  ratio: number;
+};
+
+export type CategoryExpenseDistribution = {
+  month: string;
+  items: CategoryExpenseSlice[];
+};
+
+export type MonthlyReportResponse = {
+  filter: ReportFilter;
+  summary: MonthlyReportSummary;
+  barChart: MonthlyIncomeExpenseSeries;
+  pieChart: CategoryExpenseDistribution;
+  generatedAt: string;
+};
