@@ -16,10 +16,15 @@ vi.mock("@/features/transactions/use-transactions", () => ({
   useTransactions: () => ({
     categories: [],
     transactions: [],
+    page: 1,
+    pageSize: 10,
+    total: 0,
+    totalPages: 1,
     loading: false,
     error: null,
     refresh: vi.fn(),
     createTransaction: vi.fn(),
+    updateTransaction: vi.fn(),
     deleteTransaction: vi.fn(),
   }),
 }));

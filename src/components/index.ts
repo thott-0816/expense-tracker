@@ -10,3 +10,4 @@ export { TransactionFilters } from "@/components/transaction-filters";
 export { TransactionEmptyState } from "@/components/transaction-empty-state";
 export { TransactionForm } from "@/components/transaction-form";
 export { TransactionList } from "@/components/transaction-list";
+export { TransactionPagination } from "@/components/transaction-pagination";

@@ -4,10 +4,38 @@ import { TransactionEmptyState } from "@/components/transaction-empty-state";
 
 type TransactionListProps = {
   items: TransactionRecord[];
+  loading?: boolean;
+  onEdit: (item: TransactionRecord) => void;
   onDelete: (id: string) => Promise<void> | void;
 };
 
-export function TransactionList({ items, onDelete }: TransactionListProps) {
+export function TransactionList({ items, loading = false, onEdit, onDelete }: TransactionListProps) {
+  if (loading) {
+    return (
+      <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white">
+        <table className="min-w-full divide-y divide-zinc-200 text-left text-sm">
+          <thead className="bg-zinc-50">
+            <tr>
+              <th className="px-4 py-3 font-medium text-zinc-600">Ngày</th>
+              <th className="px-4 py-3 font-medium text-zinc-600">Loại</th>
+              <th className="px-4 py-3 font-medium text-zinc-600">Danh mục</th>
+              <th className="px-4 py-3 font-medium text-zinc-600">Số tiền</th>
+              <th className="px-4 py-3 font-medium text-zinc-600">Ghi chú</th>
+              <th className="px-4 py-3 font-medium text-zinc-600">Tác vụ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="px-4 py-6 text-center text-sm text-zinc-500" colSpan={6}>
+                Đang tải...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
   if (items.length === 0) {
     return <TransactionEmptyState />;
   }
@@ -34,9 +62,14 @@ export function TransactionList({ items, onDelete }: TransactionListProps) {
               <td className="px-4 py-3">{item.amount.toLocaleString("vi-VN")}</td>
               <td className="px-4 py-3">{item.note ?? "-"}</td>
               <td className="px-4 py-3">
-                <button className="text-sm font-medium text-red-600" onClick={() => onDelete(item.id)} type="button">
-                  Xóa
-                </button>
+                <div className="flex items-center gap-3">
+                  <button className="text-sm font-medium text-sky-700" onClick={() => onEdit(item)} type="button">
+                    Sửa
+                  </button>
+                  <button className="text-sm font-medium text-red-600" onClick={() => onDelete(item.id)} type="button">
+                    Xóa
+                  </button>
+                </div>
               </td>
             </tr>
           ))}

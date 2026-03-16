@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 
-import type { FilterQuery } from "@/types/expense";
+import type { FilterQuery, PaginatedTransactions, PaginationQuery } from "@/types/expense";
 
 import { getDbClient } from "@/lib/db/transaction-context";
 import { toTransactionRecord } from "@/lib/db/mappers";
@@ -49,16 +49,29 @@ function buildWhere(filter: FilterQuery = {}) {
 }
 
 export const transactionRepository = {
-  async listTransactions(filter: FilterQuery = {}) {
+  async listTransactions(filter: FilterQuery = {}, pagination: PaginationQuery = {}): Promise<PaginatedTransactions> {
+    const requestedPage = Math.max(1, pagination.page ?? 1);
+    const pageSize = Math.min(Math.max(1, pagination.pageSize ?? 10), 100);
+    const where = buildWhere(filter);
+
+    const total = await getDbClient().transaction.count({ where });
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
+    const page = Math.min(requestedPage, totalPages);
+
     const transactions = await getDbClient().transaction.findMany({
-      where: buildWhere(filter),
+      where,
       include: { category: { select: { name: true } } },
       orderBy: [{ occurredAt: "desc" }, { createdAt: "desc" }],
+      skip: (page - 1) * pageSize,
+      take: pageSize,
     });
 
     return {
       items: transactions.map(toTransactionRecord),
-      total: transactions.length,
+      total,
+      page,
+      pageSize,
+      totalPages,
     };
   },
 

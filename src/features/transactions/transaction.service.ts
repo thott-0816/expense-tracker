@@ -1,7 +1,7 @@
 import { ApiError } from "@/lib/api/errors";
 import { logEvent } from "@/lib/logger";
 
-import type { FilterQuery } from "@/types/expense";
+import type { FilterQuery, PaginationQuery } from "@/types/expense";
 import type { CreateTransactionInput, UpdateTransactionInput } from "@/lib/validation/transaction";
 
 import { categoryRepository } from "@/features/categories/category.repository";
@@ -25,8 +25,8 @@ async function ensureCategoryExists(repository: CategoryRepository, categoryId?:
 
 export function createTransactionService(repository: TransactionRepository, categories: CategoryRepository) {
   return {
-    listTransactions(filter: FilterQuery = {}) {
-      return repository.listTransactions(filter);
+    listTransactions(filter: FilterQuery = {}, pagination: PaginationQuery = {}) {
+      return repository.listTransactions(filter, pagination);
     },
 
     async createTransaction(input: CreateTransactionInput) {

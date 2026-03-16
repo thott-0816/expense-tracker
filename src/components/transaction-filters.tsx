@@ -21,7 +21,7 @@ export function TransactionFilters({ categories, filters, onChange }: Transactio
   return (
     <form
       aria-label="Bộ lọc giao dịch"
-      className="grid gap-3 rounded-2xl border border-zinc-200 bg-white p-4 shadow-[0_12px_40px_-28px_rgba(15,23,42,0.35)] md:grid-cols-5"
+      className="grid gap-3 rounded-2xl border border-zinc-200 bg-white p-4 shadow-[0_12px_40px_-28px_rgba(15,23,42,0.35)] md:grid-cols-[repeat(5,minmax(0,1fr))_auto]"
       role="search"
     >
       <label className="flex flex-col gap-2 text-sm text-zinc-700">
@@ -79,14 +79,19 @@ export function TransactionFilters({ categories, filters, onChange }: Transactio
           onChange={(event) => onChange({ ...filters, toDate: event.target.value })}
         />
       </label>
-      <div className="md:col-span-5 flex justify-end">
+      <div className="flex items-end justify-end">
         <button
-          className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
+          aria-label="Đặt lại bộ lọc"
+          title="Đặt lại bộ lọc"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-300 text-zinc-700 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={!hasActiveFilters}
           onClick={() => onChange({ keyword: "", kind: "all", categoryId: "", fromDate: "", toDate: "" })}
           type="button"
         >
-          Xóa bộ lọc
+          <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 12a8 8 0 1 1-2.34-5.66" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+            <path d="M20 4v4h-4" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+          </svg>
         </button>
       </div>
     </form>

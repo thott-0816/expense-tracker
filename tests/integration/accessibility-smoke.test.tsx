@@ -40,6 +40,6 @@ describe("accessibility smoke coverage", () => {
     expect(screen.getByRole("tablist", { name: /chọn kỳ báo cáo/i })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: /tuần/i })).toHaveAttribute("aria-selected", "true");
     expect(screen.getByRole("search", { name: /bộ lọc giao dịch/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /xóa bộ lọc/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /đặt lại bộ lọc/i })).toBeInTheDocument();
   });
 });
